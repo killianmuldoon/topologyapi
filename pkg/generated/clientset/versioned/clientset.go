@@ -23,7 +23,7 @@ package versioned
 import (
 	"fmt"
 
-	k8sv1alpha1 "github.com/swatisehgal/topologyapi/pkg/generated/clientset/versioned/typed/topology/v1alpha1"
+	topologyv1alpha1 "github.com/swatisehgal/topologyapi/pkg/generated/clientset/versioned/typed/topology/v1alpha1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
@@ -31,19 +31,19 @@ import (
 
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
-	K8sV1alpha1() k8sv1alpha1.K8sV1alpha1Interface
+	TopologyV1alpha1() topologyv1alpha1.TopologyV1alpha1Interface
 }
 
 // Clientset contains the clients for groups. Each group has exactly one
 // version included in a Clientset.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	k8sV1alpha1 *k8sv1alpha1.K8sV1alpha1Client
+	topologyV1alpha1 *topologyv1alpha1.TopologyV1alpha1Client
 }
 
-// K8sV1alpha1 retrieves the K8sV1alpha1Client
-func (c *Clientset) K8sV1alpha1() k8sv1alpha1.K8sV1alpha1Interface {
-	return c.k8sV1alpha1
+// TopologyV1alpha1 retrieves the TopologyV1alpha1Client
+func (c *Clientset) TopologyV1alpha1() topologyv1alpha1.TopologyV1alpha1Interface {
+	return c.topologyV1alpha1
 }
 
 // Discovery retrieves the DiscoveryClient
@@ -67,7 +67,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	}
 	var cs Clientset
 	var err error
-	cs.k8sV1alpha1, err = k8sv1alpha1.NewForConfig(&configShallowCopy)
+	cs.topologyV1alpha1, err = topologyv1alpha1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 // panics if there is an error in the config.
 func NewForConfigOrDie(c *rest.Config) *Clientset {
 	var cs Clientset
-	cs.k8sV1alpha1 = k8sv1alpha1.NewForConfigOrDie(c)
+	cs.topologyV1alpha1 = topologyv1alpha1.NewForConfigOrDie(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClientForConfigOrDie(c)
 	return &cs
@@ -92,7 +92,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 // New creates a new Clientset for the given RESTClient.
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
-	cs.k8sV1alpha1 = k8sv1alpha1.New(c)
+	cs.topologyV1alpha1 = topologyv1alpha1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
 	return &cs

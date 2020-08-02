@@ -174,9 +174,9 @@ type SharedInformerFactory interface {
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
-	K8s() topology.Interface
+	Topology() topology.Interface
 }
 
-func (f *sharedInformerFactory) K8s() topology.Interface {
+func (f *sharedInformerFactory) Topology() topology.Interface {
 	return topology.New(f, f.namespace, f.tweakListOptions)
 }

@@ -58,7 +58,7 @@ type nodeResourceTopologies struct {
 }
 
 // newNodeResourceTopologies returns a NodeResourceTopologies
-func newNodeResourceTopologies(c *K8sV1alpha1Client, namespace string) *nodeResourceTopologies {
+func newNodeResourceTopologies(c *TopologyV1alpha1Client, namespace string) *nodeResourceTopologies {
 	return &nodeResourceTopologies{
 		client: c.RESTClient(),
 		ns:     namespace,
